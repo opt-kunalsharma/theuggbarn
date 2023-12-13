@@ -63,7 +63,7 @@
             <p class="follow-on-shop">
               {% comment %} TODO: enable theme-check once `login_button` is accepted as valid filter {% endcomment %}
               {% # theme-check-disable %}
-              {{ shop | login_button: action: 'follow' }}
+              {{ shop | login_button: action: 'follow' | replace: '<script defer="defer" async type="module" src="', '<script type="lazyload_js" data-appco-type="module" data-src="' | replace: '<script type="module">', '<script type="lazyload_js" data-appco-type="module">' }}
               {% # theme-check-enable %}
             </p>
           {%- endif -%}

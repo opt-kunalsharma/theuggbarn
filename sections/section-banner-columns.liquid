@@ -86,8 +86,9 @@
               <picture>
                   {% if block.settings.image_mobile %}
                     <img
-                        src="{{ block.settings.image_mobile | image_url: width: 620 }}"
-                        srcset="{% render 'image-srcset', image: block.settings.image_mobile %}"
+                        data-class="LazyLoad"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="  
+                        data-src="{{ block.settings.image_mobile | image_url: width: 360 }}"
                         sizes="
                           (min-width: 768px) 0,
                           {% if section.settings.layout_mobile == 'compact' %}315px{% else %}100vw{% endif %}
@@ -101,8 +102,10 @@
                     >
                   {% endif %}
                   <img
-                    src="{{ block.settings.image | image_url: width: 620 }}"
-                    srcset="{% render 'image-srcset', image: block.settings.image %}"
+                    data-class="LazyLoad"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" 
+                    data-src="{{ block.settings.image | image_url: width: 680 }}" 
+                    data-mob-src="{{ block.settings.image | image_url: width: 360 }}" 
                     sizes="
                      {% if section.settings.width == 'boxed' or settings.width < 2000 %}
                       (min-width: 1300px) {% if img_width == 100 %}{{ settings.width }}px{% else %}calc({{ settings.width }}px * 0.{{ img_width }}){%- endif -%},

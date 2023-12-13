@@ -659,25 +659,10 @@
           {% unless layout == 'list-compact' %}<a href="{{ product.url }}">{% endunless %}
             <picture class="{% if settings.multiply_product_images == 'multiply' %}img-multiply{% elsif settings.multiply_product_images == 'multiply-bg' %}img-multiply-bg{% endif %}">
               <img
-                src="{%- if fill_images -%}{{ first_image | image_url: width: image_width_2, height: image_height_2, crop: 'center' }}{%- else -%}{{ first_image | image_url: height: image_height_2 }}{%- endif -%}"
-                {%- if sizes -%}
-                  srcset="
-                    {%- if fill_images -%}
-                      {%- render 'image-srcset', image: first_image, format: 'custom', image_height: custom_height_ratio, max_width: 640, crop: 'center' -%}
-                    {%- else -%}
-                      {%- render 'image-srcset', image: first_image, max_width: 640 -%}
-                    {%- endif -%}
-                  "
-                  sizes="{{ sizes }}"
-                {%- else -%}
-                  srcset="
-                  {%- if fill_images -%}
-                    {{ first_image | image_url: width: image_width, height: image_height, crop: 'center' }} 1x, {{ first_image | image_url: width: image_width_2, height: image_height_2, crop: 'center' }} 2x
-                  {%- else -%}
-                    {{ first_image | image_url: height: image_height }} 1x, {{ first_image | image_url: height: image_height_2 }} 2x
-                  {%- endif -%}
-                  "
-                {%- endif -%}
+                data-class="LazyLoad"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                data-src="{{ first_image | image_url: width: 580 }}"
+                data-mob-src="{{ first_image | image_url: width: 360 }}"
                 width="{{ image_width }}"
                 height="{{ image_height }}"
                 alt="{{ first_image.alt | default: product.title | escape }}"
@@ -688,25 +673,10 @@
             {% if show_secondary_image and settings.image_behaviour != 'slider' %}
               <picture class="{% if settings.multiply_product_images == 'multiply' %}img-multiply{% elsif settings.multiply_product_images == 'multiply-bg' %}img-multiply-bg{% endif %}">
                 <img
-                  src="{%- if fill_images -%}{{ second_image | image_url: width: image_width_2, height: image_height_2, crop: 'center' }}{%- else -%}{{ second_image | image_url: height: image_height_2 }}{%- endif -%}"
-                  {%- if sizes -%}
-                    srcset="
-                      {%- if fill_images -%}
-                        {%- render 'image-srcset', image: second_image, format: 'custom', image_height: custom_height_ratio, max_width: 640, crop: 'center' -%}
-                      {%- else -%}
-                        {%- render 'image-srcset', image: second_image, max_width: 640 -%}
-                       {%- endif -%}
-                    "
-                    sizes="{{ sizes }}"
-                  {%- else -%}
-                    srcset="
-                      {%- if fill_images -%}
-                        {{ second_image | image_url: width: image_width, height: image_height, crop: 'center' }} 1x, {{ second_image | image_url: width: image_width_2, height: image_height_2, crop: 'center' }} 2x
-                      {%- else -%}
-                        {{ second_image | image_url: height: image_height }} 1x, {{ second_image | image_url: height: image_height_2 }} 2x
-                      {%- endif -%}
-                    "
-                  {%- endif -%}
+                  data-class="LazyLoad"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                  data-src="{{ second_image | image_url: width: 580 }}"
+                  data-mob-src="{{ second_image | image_url: width: 360 }}"
                   width="{{ image_width }}"
                   height="{{ image_height }}"
                   alt="{{ second_image.alt | default: product.title | escape }}"
