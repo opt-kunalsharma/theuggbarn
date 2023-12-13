@@ -1,0 +1,470 @@
+{defaultcss}
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<div id="ebay-description" class="nojs">
+		<div class="container">
+				<img class="logo" src="{CDNUrl}/images/logo.png?width=125&amp;nostretch&etag={LogoEtag}" />		
+		</div>
+		<div class="container">
+				<div class="block">
+						<div class="row">
+								<div class="span12">
+										<h2>{Title}</h2>
+								</div>
+						</div>
+						<div class="row">
+								<div class="span12">
+										{include field="EbayDescription"}
+								</div>
+						</div>
+						<div class="row">
+								<div class="span12 text-center">
+										<a href="#img1">
+										  <img class="logo" src="{CDNUrl}/productimages/{ProductID}.png?width=547&amp;etag={etag}">
+										</a>
+										<a href="#_" class="lightbox" id="img1">
+											<div class="close-img">&times</div>
+											<img src="{CDNUrl}/productimages/{ProductID}.png?width=800&amp;etag={etag}" />
+										</a>
+
+										{for images}
+											<a href="#_" class="lightbox" id="img{position+1}">
+												<div class="close-img">&times</div>
+												<img src="{cdnurl}{images.src}?width=800&amp;height=600&amp;nostretch">
+											</a>
+										{/for}
+
+										<div class="clearfix"></div>
+										{if count(images) > 1}<hr/>{/if}
+										{for images step=4}
+												<div class="row image-row text-center">
+														{for Images count=4 start={position}}
+														<div class="span2"><a class="image fancybox" href="#img{position+1}"><img src="{cdnurl}{images.src}?width=200&amp;height=200"/></a></div>
+														{/for}
+												</div>
+										{/for}
+										<br />
+								</div>
+						</div>
+						<div class="row">
+								<div class="span5 buy-now">
+								{if !MultiVariant}
+										<a href="http://offer.{EbaySiteURL}/ws/eBayISAPI.dll?BinConfirm&amp;quantity=1&amp;fb=1&amp;item={EbayItemID}" target="_blank" class="btn btn-large btn-primary"><i class="icon-shopping-cart icon-white"></i> Buy now and save!</a>
+								{/if}
+								</div>
+								<div class="span7 buttons">
+										<a href="http://contact.{EbaySiteURL}/ws1/eBayISAPI.dll?ShowEmailAuctionToFriend&amp;rt=nc&amp;item={EbayItemID}" target="_blank" class="btn btn"><i class="icon-bullhorn"></i> Tell a friend</a>
+										{if EbayStoreURL}
+										<a href="{EbayStoreURL}" target="_blank" class="btn btn"><i class="icon-gift"></i> Visit store</a>
+										{/if}
+										<a href="http://cgi1.{EbaySiteURL}/ws/eBayISAPI.dll?MakeTrack&amp;item={EbayItemID}" target="_blank" class="btn btn"><i class="icon-eye-open"></i> Watch now</a>
+								</div>
+						</div>
+				</div>
+		</div>
+		{if overviewhtml}
+		<div class="container">
+		<div class="block">
+			<div class="row">
+				<div class="span12">
+					<h2>Overview</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span7">
+					{include field="overviewhtml"}
+				</div>
+				<div class="span5">
+					<div class="quote">
+						<p><a href="http://contact.{EbaySiteURL}/ws/eBayISAPI.dll?FindAnswers&amp;requested={EbayUserID}&amp;iid={EbayItemID}" target="_blank">Contact Us</a> for more details!</p>
+					</div>
+					{for overview}
+						<img src="{CDNUrl}{src}" />
+					{/for}
+				</div>
+			</div>
+		</div>
+		</div>
+		{/if}
+		{if productspecshtml}
+		<div class="container">
+			<div class="block">
+				<div class="row">
+					<div class="span12">
+						<h2>Product specification</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span6">
+						{include field="productspecshtml"}
+					</div>
+					<div class="span6">
+					{for specimage step=2}
+					<div class="row">
+						{for specimage count=2 start={position}}
+							<div class="span3">
+								<a class="fancybox image" href="{CDNUrl}{specimage.src}"><img src="{CDNUrl}{specimage.src}" /></a>
+							</div>
+						{/for}
+					</div>
+					{/for}
+					</div>
+				</div>
+			</div>
+		</div>
+		{/if}
+		<div class="container">
+				<div class="block">
+						<div class="row">
+							<div class="span12">
+								<h2>Postage {if ShippingDomesticServiceType = "CalculatedMerchant"}calculator{else if ShippingDomesticServiceType = "CalculatedEbay" OR ShippingRateTable}info{else}costs{/if}</h2>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span4">
+									{if ShippingDomesticServiceType = "CalculatedMerchant"}
+									<div class="quote">
+										<a class="postage-quote" href="{MerchantURL}/cart/quote/?emptycart=1&sku={ProductCode}" target="codisto!freightquote"><strong>Click here to get a postage quote</strong></a>
+									</div>
+									{/if}
+
+									<div class="quote {if ShippingDomesticServiceType = "CalculatedMerchant"}hide{/if}">
+									<p class="price">
+									<strong>
+										{if !ShippingRateTable}
+											{if FlatShippingRate = 0 AND ShippingDomesticServiceType = "Flat"}
+												FREE {if LocalPickupFirstOption}Local Pickup{else}Postage{/if}
+											{else if ShippingDomesticServiceType = "Flat"}
+												Price:
+												<span class="freightprice">
+													{if ShippingDomesticServiceType = "Flat"}
+														{format FlatShippingRate, EbayCurrency} <small>(local shipping)</small>
+													{/if}
+												</span>
+											{/if}
+										{/if}
+									</strong>
+									</p>
+									<p style="display:none;" class="freightmessage"></p>
+									<p style="text-align:center;">
+									<span style="font-size:10px;" class="servicename"></span>
+									{if ShippingDomesticServiceType = "CalculatedMerchant" AND JavascriptAllowed}<span style="display:none;" class="seemore"><a href="#">See more...</a></span>{/if}
+
+									{if ShippingDomesticServiceType = "Flat" AND !ShippingRateTable}
+										{if ShippingDomesticService2 OR ShippingInternationalService1}
+										<br/>
+										{if JavascriptAllowed}
+										<span class="seemoreflat"><a href="#">See more...</a></span>
+											<div style="display:none;" class="moreservicesflat">
+												<div class="moreservicesflatcontent">
+													{if ShippingDomesticService1}{ShippingDomesticService1} - <strong>{format ShippingDomesticCost1, EbayCurrency}</strong>{/if}
+													{if ShippingDomesticService2}<hr/>{ShippingDomesticService2} - <strong>{format ShippingDomesticCost2, EbayCurrency}</strong>{/if}
+													{if ShippingDomesticService3}<hr/>{ShippingDomesticService3} - <strong>{format ShippingDomesticCost3, EbayCurrency}</strong>{/if}
+													{if ShippingDomesticService4}<hr/>{ShippingDomesticService4} - <strong>{format ShippingDomesticCost4, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService1}<hr/>{ShippingInternationalService1} - <strong>{format ShippingInternationalCost1, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService2}<hr/>{ShippingInternationalService2} - <strong>{format ShippingInternationalCost2, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService3}<hr/>{ShippingInternationalService3} - <strong>{format ShippingInternationalCost3, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService4}<hr/>{ShippingInternationalService4} - <strong>{format ShippingInternationalCost4, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService5}<hr/>{ShippingInternationalService5} - <strong>{format ShippingInternationalCost5, EbayCurrency}</strong>{/if}
+											</div>
+										</div>
+										{/if}
+
+										{if !JavascriptAllowed}
+											{if ShippingDomesticService2}<h4>More Services</h4>{/if}
+											<div class="moreservicesflat">
+												<div class="moreservicesflatcontent">
+													{if ShippingDomesticService1}{ShippingDomesticService1} - <strong>{format ShippingDomesticCost1, EbayCurrency}</strong>{/if}
+													{if ShippingDomesticService2}<hr/>{ShippingDomesticService2} - <strong>{format ShippingDomesticCost2, EbayCurrency}</strong>{/if}
+													{if ShippingDomesticService3}<hr/>{ShippingDomesticService3} - <strong>{format ShippingDomesticCost3, EbayCurrency}</strong>{/if}
+													{if ShippingDomesticService4}<hr/>{ShippingDomesticService4} - <strong>{format ShippingDomesticCost4, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService1}<hr/>{ShippingInternationalService1} - <strong>{format ShippingInternationalCost1, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService2}<hr/>{ShippingInternationalService2} - <strong>{format ShippingInternationalCost2, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService3}<hr/>{ShippingInternationalService3} - <strong>{format ShippingInternationalCost3, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService4}<hr/>{ShippingInternationalService4} - <strong>{format ShippingInternationalCost4, EbayCurrency}</strong>{/if}
+													{if ShippingInternationalService5}<hr/>{ShippingInternationalService5} - <strong>{format ShippingInternationalCost5, EbayCurrency}</strong>{/if}
+												</div>
+											</div>
+											{/if}
+										{/if}
+									{/if}
+
+									<div style="display:none;" class="moreservices">
+											<div style="height:220px; overflow:auto;">
+
+											</div>
+									</div>
+
+									{if ShippingDomesticServiceType = "CalculatedEbay" OR ShippingRateTable != 0}
+										Click the Postage tab above the listing description for more info
+									{/if}
+									</p>
+									</div>
+
+									<h3 class="icon"><img src="{CDNUrl}/ebay/images/icn-delivery.jpg" />Additional delivery notes</h3>
+
+									
+											<p><li class="li4">Free Delivery</p><p><li class="li4">Fast Dispatch within 1 business day</p><p><li class="li4">Tracked Shipping</p>
+											
+											
+													
+											</ol>
+									{else}
+											
+									{/if}
+								</div>
+								<div class="span4">
+										<table>
+												<tr>
+														<td style="width: 50px;vertical-align: top;">
+																<img src="{CDNUrl}/ebay/images/icn-paypal.jpg" />
+														</td>
+												<td>
+										<h3 class="icon">PAYMENTS:</h3></td></tr></table>
+										<br/>
+                                  <p><li class="li4">PayPal</p>
+                                  <p><li class="li4">Google Pay</p>
+                                  <p><li class="li4">Visa</p>
+                                  <p><li class="li4">MasterCard</p>
+                                  <p><li class="li4">American Express</p>
+                                  <p><li class="li4">Afterpay may be available</p>  
+                                  <p><li class="li4">Zip may be available</p>  
+
+										{if ShippingDomesticServiceType = "CalculatedMerchant"}
+
+												<p>eBay should update your Freight cost into the checkout process once you have committed to purchase.</p>
+												<p>If checkout gets stuck and does not allow you to proceed, simply use your browser's Back button to return to the <strong><i>Pay Now</i></strong> option and try again.</p>
+
+										{/if}
+
+										{if MoneyOrderAccepted}
+												<h3 class="icon"><img src="{CDNUrl}/ebay/images/icn-moneyorder.jpg" />Paying via money order</h3>
+												<p>Simply add the freight cost to the item cost and forward the total amount to the address to be provided following your purchase.</p>
+										{/if}
+
+										{if DirectDepositAccepted}
+												<h3 class="icon"><img src="{CDNUrl}/ebay/images/icn-moneyorder.jpg" />Paying via Direct Deposit</h3>
+												<p>Simply add the freight cost to the item cost and forward the total amount to the address to be provided following your purchase.</p>
+										{/if}
+
+								</div>
+								<div class="span4">
+										<h3 class="icon"><img src="{CDNUrl}/ebay/images/icn-info.jpg" />Additional Information</h3>
+										{if AdditionalInfo}
+										<p>{AdditionalInfo}</p>
+										{else}
+										<p>Shop with confidence, all purchases are covered under eBay's money back guarantee <a title="eBay Money Back Guarantee" href="https://pages.ebay.com.au/ebay-money-back-guarantee/" target="_blank" rel="noopener">more details</p>
+										{/if}
+										<p><a target="_blank" href="http://contact.{EbaySiteURL}/ws/eBayISAPI.dll?FindAnswers&amp;requested={EbayUserID}&amp;iid={EbayItemID}" class="btn btn-info btn-large"><i class="icon-info-sign icon-white"></i> Ask seller a question</a></p></p>
+<span class="s1">Monday to Friday&nbsp;<br /> 8:30am to 5:30pm Australian Eastern Time&nbsp;<br /> Closed NSW Public Holidays</span></p>
+								</div>
+						</div>
+				</div>
+		</div>
+		{if SuggestedProducts}
+				<div class="container">
+					<div class="block" id="you_like">
+						<div class="row">
+							<div class="span12">
+								<h2>You might also like</h2>
+							</div>
+						</div>
+						<div class="row">
+							{for SuggestedProducts}
+								<div class="span3">
+									<div class="imagecenter">
+										<a target="_blank" href="http://cgi.{EbaySiteURL}/{EbayItemID}"><img src="{CDNUrl}/productimages/{ID}.jpg?width=170&height=170" /></a>
+									</div>
+									<h4><a target="_blank" href="http://cgi.{EbaySiteURL}/{EbayItemID}">{Name}</a></h4>
+								</div>
+							{/for}
+						</div>
+					</div>
+				</div>
+		{/if}
+
+		{if JavascriptAllowed}
+
+		<div class="container">
+		<div class="tabs">
+
+		   <div class="tab">
+			   <input type="radio" id="tab-1" name="tab-group-1" checked>
+			   <label for="tab-1" style="margin-left: 2px;">Contact</label>
+
+			   <div class="content">
+						 <div class="row">
+								 <div class="span6">
+										 <p>To contact our Customer Service Team, simply click the button here and our Customer Service team will be happy to assist.</p>
+										 <p><a target="_blank" href="http://contact.{EbaySiteURL}/ws/eBayISAPI.dll?FindAnswers&amp;requested={EbayUserID}&amp;iid={EbayItemID}" class="btn btn-primary btn-large"><i class="icon-info-sign icon-white"></i> Ask seller a question</a></p></p>Monday to Friday 8:30am to 5:30pm Australian Eastern Time&nbsp;<br /> Closed NSW Public Holidays</p>
+								 </div>
+								 <div class="span6">
+										 {if MerchantName != "<to be set>"}<p>&copy; {MerchantName}</p>{/if}
+								 </div>
+						 </div>
+			   </div>
+		   </div>
+
+		   <div class="tab">
+			   <input type="radio" id="tab-2" name="tab-group-1">
+			   <label for="tab-2">Postage</label>
+
+			   <div class="content">
+					 <p>
+                       											<p><li class="li4">Free Delivery</p><p><li class="li4">Fast Dispatch within 1 business day</p><p><li class="li4">Tracked Shipping</p>
+							 {if ShippingDomesticServiceType = "CalculatedEbay" OR ShippingRateTable != 0}
+								 Click the Postage tab above the listing description for more info
+							 {else}
+								 {if FlatShippingRate = 0 AND ShippingDomesticServiceType = "Flat"}
+										 Shipping is FREE for this item
+								 {else if ShippingDomesticServiceType = "Flat"}
+										 Shipping is a flat rate across {MerchantCountry} at a rate of {format ShippingDomesticCost1, EbayCurrency}
+								 {else if ShippingDomesticServiceType = "CalculatedMerchant"}
+										 Shipping can be calculated with the Postage Calculator above.
+								 {else}
+										 Shipping is calculated on eBay, click the Postage tab above the listing description for more information.
+								 {/if}
+							 {/if}
+					 </p>
+			   </div>
+		   </div>
+
+			{if WarrantyHTML}
+			<div class="tab">
+				<input type="radio" id="tab-3" name="tab-group-1">
+				<label for="tab-3">Warranty</label>
+
+				<div class="content">
+					{include field="WarrantyHTML"}
+				</div>
+			</div>
+			{/if}
+
+			<div class="tab">
+				<input type="radio" id="tab-4" name="tab-group-1">
+				<label for="tab-4">Payment</label>
+
+				<div class="content">
+				 <p>Accepted Payment Methods</p>
+				 <ul>
+						<li><strong>PayPal</strong></li>
+                   <li><strong>Google Pay </strong></li>
+                   <li><strong>Visa </strong></li>
+                   <li><strong>MasterCard </strong></li>
+                   <li><strong>American Express </strong></li>
+                   <li><strong>Afterpay may be available </strong></li>
+                   <li><strong>Zip may be available </strong></li>
+						{if MoneyOrderAccepted}
+						<li><strong>Money Order</strong></li>
+						{/if}
+						{if DirectDepositAccepted}
+						<li><strong>Direct Deposit</strong></li>
+						{/if}
+				 </ul>
+				</div>
+			</div>
+
+			<div class="tab">
+			  <input type="radio" id="tab-5" name="tab-group-1">
+			  <label for="tab-5">Returns</label>
+
+			  <div class="content">
+					{if ReturnsAccepted}
+						<p>Returns are accepted</p>
+						<p>Items must be returned within
+						{if ReturnsWithin = "Days_3"}
+							3 days
+						{else if ReturnsWithin = "Days_7"}
+							7 days
+						{else if ReturnsWithin = "Days_10"}
+							10 days
+						{else if ReturnsWithin = "Days_14"}
+							14 days
+						{else if ReturnsWithin = "Days_30"}
+							30 days
+						{else if ReturnsWithin = "Days_60"}
+							60 days
+						{/if} of the auction ending</p>
+					{else}
+						<p>Returns are <strong>not</strong> accepted</p>
+					{/if}
+
+					<p>{if EbayShippingCostPaidByOption = "Buyer"}Buyer{else}Seller{/if} will pay for return shipping. </p>
+
+					{if EbayReturnPolicyDescription}
+						<br />
+						<strong>Additional Information:</strong>
+						<div>{EbayReturnPolicyDescription}</div>
+					{/if}
+                <p><strong>Exchanges</strong><p>
+<p>exchange within 30 days of receiving your order, item/s must be in new condition with original tags and packaging. Simply contact us and we will advise the return address (buyer returns at their cost), once received we will process and dispatch the exchange for Free (1 exchange available per order).</p>
+                <p><strong>Refunds</strong><p>
+                  <p>30-Day Money Back Guarantee<p>
+<p>We want you to be completely satisfied with your purchase. If you're not happy with your item for any reason, you can return it within 30 days of delivery for a full refund</p>
+                    <p>Please note that shipping charges, such as express or international shipping, are non-refundable. Orders with free delivery will receive a full refund.</p>
+                <p><strong>Here are the conditions for return:</strong><p>
+                  <p>The item must be in the same condition as you received it, with all original tags and packaging intact.<p>
+    <p>All accessories and tags must be <strong>included</strong> in the return.<p>
+   <p>The buyer is responsible for all return shipping costs.<p>
+                <p><strong>To initiate a return:</strong><p>
+<p>Go to My eBay and select your purchase history.<p>
+     <p>Find the item you want to return and click "Return this item."<p>
+     <p>Choose the reason for your return and follow the on-screen instructions. <p>
+     <p>Pack the item securely and ship it back to us using a trackable shipping method.<p>    
+ <p><strong>Please note:</strong><p>
+    <p>We cannot accept returns for used or damaged items.<p>
+    <p>We cannot accept returns for items that have been modified from their original condition.<p>
+     <p>We are not responsible for lost or stolen packages during return shipping.<p>
+				 <p><a target="_blank" href="http://contact.{EbaySiteURL}/ws/eBayISAPI.dll?FindAnswers&amp;requested={EbayUserID}&amp;iid={EbayItemID}" class="btn btn-primary btn-large"><i class="icon-info-sign icon-white"></i> Contact Us</a></p>
+				 </ul>
+				</div>
+			</div>
+   
+<div class="tab">
+				<input type="radio" id="tab-6" name="tab-group-1">
+				<label for="tab-6">FAQ</label>
+				<div class="content">
+                  <p><strong>Do I get a discount when I purchase more than one item at a time and how do I use it?</strong></p>
+                  <p>If volume discounts are available on listing then yes. To use the discount, simply add your desired selection to cart, repeat the process, once all selections complete head to checkout and discount will be visible. If there are any issues, please contact us prior to purchasing, as we are unable to discount once payment is processed.</strong></p>
+                  <p><strong>Can I use my discount code after I complete my purchase?</strong></p>
+                   <p>No, we are unable to process discounts once payment has been processed, please contact prior to completing your purchase for any issues with discount codes.</p>
+                    <p><strong>I have made a mistake with my purchase, can I cancel the order?</strong></p>
+                   <p>If you contact us prior to the item/s being dispatched, we can either cancel the order or make alterations. However, if the order has already been dispatched, you will need to go through the returns procedure.</p>
+<p><strong>Can I and how do I exchange my item/s?</strong></p>
+                   <p>Yes you can exchange within 30 days of receiving your order, item/s must be in new condition with original tags and packaging. Simply contact us and we will advise the return address (buyer returns at their cost), once received we will process and dispatch the exchange for Free (1 exchange available per order).</p>
+                      <p><strong>How can I return for a refund?</strong></p>
+                   <p>You can return for a refund within 30 days of receiving your order, item/s must be in new condition with original tags, packaging and accessories (buyer returns at their cost). Simply begin a return request via eBay and follow the prompts.</p>
+                      <p><strong>I am not happy with my purchase, can you assist before I leave feedback?</strong></p>
+                   <p>Most definetely. Customer satisfaction is the upmost importance to us, if you encounter any issues, please give us a chance and contact us prior to leaving feedback and we will assist the bet we can.</p>
+                
+				 <p><a target="_blank" href="http://contact.{EbaySiteURL}/ws/eBayISAPI.dll?FindAnswers&amp;requested={EbayUserID}&amp;iid={EbayItemID}" class="btn btn-primary btn-large"><i class="icon-info-sign icon-white"></i> Contact Us </a></p>
+				 </ul>
+			   </div>
+		   </div>
+
+		</div>
+		</div>
+
+		{else}
+
+						</div>
+						</div>
+				</div>
+		</div>
+
+		{/if}
+
+		<div class="container" id="footer">
+				<!--
+			  ***************
+			  The following logo and attribution needs to remain with the appropriate link back to codisto.com as per our terms of service: https://codisto.com/connect/termsandconditions.html
+			  ****************
+			  -->
+				<div class="pull-right logo">
+						<span class="muted"> eBay integration</span> by
+						<img class="baseline" src="{CDNUrl}/images/codisto-connect.png?width=200&amp;nostretch&amp;v=1" />
+				</div>
+				<img class="logo" src="{CDNUrl}/images/logo.png?width=201&nostretch&etag={LogoEtag}" />
+		</div>
+</div>
